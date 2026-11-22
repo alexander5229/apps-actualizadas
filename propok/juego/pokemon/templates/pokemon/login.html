@@ -1,0 +1,135 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión | ProPok</title>
+    
+    <!-- Puedes usar tu archivo de estilos principal o incluir estos estilos limpios -->
+    <link rel="stylesheet" href="{% static 'pokemon/css/estilos.css' %}">
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-card h1 {
+            color: #3b5ca8;
+            margin-bottom: 5px;
+        }
+
+        .login-card p {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            border-color: #3b5ca8;
+            outline: none;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: #3b5ca8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .btn-login:hover {
+            background: #2c4782;
+        }
+
+        .error-message {
+            color: #d9534f;
+            background: #f8d7da;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-card">
+        <h1>ProPok</h1>
+        <p>Inicia sesión en tu cuenta</p>
+
+        <!-- Mensaje de error si las credenciales fallan -->
+        {% if form.errors %}
+            <div class="error-message">
+                Usuario o contraseña incorrectos. Por favor, intenta de nuevo.
+            </div>
+        {% endif %}
+
+        <!-- Formulario estándar de autenticación de Django -->
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="id_username">Usuario:</label>
+                <!-- Django genera automáticamente el input de usuario con id_username -->
+                <input type="text" name="username" autofocus autocapitalize="none" autocomplete="username" maxlength="150" required id="id_username" placeholder="Ingresa tu usuario">
+            </div>
+
+            <div class="form-group">
+                <label for="id_password">Contraseña:</label>
+                <!-- Django genera automáticamente el input de contraseña -->
+                <input type="password" name="password" autocomplete="current-password" required id="id_password" placeholder="••••••••">
+            </div>
+
+            <button type="submit" class="btn-login">Ingresar</button>
+        </form>
+    </div>
+
+</body>
+
+</html>

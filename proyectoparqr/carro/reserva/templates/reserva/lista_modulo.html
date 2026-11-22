@@ -1,0 +1,92 @@
+{% extends 'reserva/base.html' %}
+{% load static %}
+
+{% block title %} Lista de Módulos - Proyectoparqr {% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+
+        <!-- Cabecera de la sección -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>🚗 Módulos (Espacios de Parqueo)</h2>
+            <a href="{% url 'crear_modulo' %}" class="btn btn-success btn-sm">+ Nuevo Módulo</a>
+        </div>
+
+        <!-- Mensajes de alerta -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Barra de búsqueda -->
+        <form method="GET" class="mb-3">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Buscar por color, tipo o parqueadero..." value="{{ query|default:'' }}">
+                <button class="btn btn-primary" type="submit">🔍 Buscar</button>
+                {% if query %}
+                    <a href="{{ request.path }}" class="btn btn-outline-secondary">Limpiar</a>
+                {% endif %}
+            </div>
+        </form>
+
+        <!-- Validación con IF -->
+        {% if modulos %}
+        <div class="card shadow-sm">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped mb-0 align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Color</th>
+                                <th>Tipo</th>
+                                <th>Parqueadero Pertenece</th>
+                                <th>Estado</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for modulo in modulos %}
+                            <tr>
+                                <td><strong>{{ forloop.counter }}</strong></td>
+                                <td><span class="fw-bold text-primary">{{ modulo.color }}</span></td>
+                                <td>{{ modulo.tipo }}</td>
+                                <td>{{ modulo.parqueadero.nombre }}</td>
+                                <td>
+                                    {% if modulo.estado %}
+                                        <span class="badge bg-success">Disponible</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Ocupado / Inactivo</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-center">
+                                    <a href="{% url 'editar_modulo' modulo.pk %}" class="btn btn-sm btn-outline-warning">Editar</a>
+                                    <a href="{% url 'eliminar_modulo' modulo.pk %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="alert alert-warning text-center shadow-sm p-4" role="alert">
+            {% if query %}
+                <h4 class="alert-heading">Sin resultados para "{{ query }}"</h4>
+                <p class="mb-0">Intenta con otro término o haz clic en <strong>Limpiar</strong>.</p>
+            {% else %}
+                <h4 class="alert-heading">¡Sin módulos registrados!</h4>
+                <p class="mb-0">Actualmente no hay espacios o módulos creados en el sistema.</p>
+            {% endif %}
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

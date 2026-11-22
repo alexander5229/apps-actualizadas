@@ -1,0 +1,17 @@
+{% extends 'oficio/base.html' %}
+
+{% block title %}Eliminar programa{% endblock %}
+
+{% block content %}
+<div class="caja-confirmacion">
+    <h1>Eliminar programa</h1>
+    <p>¿Seguro que deseas eliminar el programa <strong>{{ programa.nombre }}</strong> (Ficha: {{ programa.ficha }})?</p>
+    <p class="aviso">Nota: si este programa tiene aprendices asociados con borrado en cascada, también se eliminarán.</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-rojo">Sí, eliminar</button>
+        <a href="{% url 'lista_programas' %}" class="btn btn-verde">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

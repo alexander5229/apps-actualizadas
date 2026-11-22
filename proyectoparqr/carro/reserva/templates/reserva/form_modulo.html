@@ -1,0 +1,29 @@
+{% extends 'reserva/base.html' %}
+{% load static %}
+
+{% block title %} {{ accion }} Módulo - Proyectoparqr {% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white">
+                <h4 class="mb-0">🚗 {{ accion }} Módulo</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    <!-- Renderizamos los campos del formulario con clases de Bootstrap -->
+                    {{ form.as_p }}
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{% url 'lista_modulo' %}" class="btn btn-outline-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Guardar Módulo</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

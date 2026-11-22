@@ -1,0 +1,16 @@
+{% extends 'oficio/base.html' %}
+
+{% block title %}Eliminar competencia{% endblock %}
+
+{% block content %}
+<div class="caja-confirmacion">
+    <h1>Eliminar competencia</h1>
+    <p>¿Seguro que deseas eliminar la competencia <strong>{{ competencia.nombre }}</strong> (Ficha: {{ competencia.ficha }})?</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-rojo">Sí, eliminar</button>
+        <a href="{% url 'lista_competencias' %}" class="btn btn-verde">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

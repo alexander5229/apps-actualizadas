@@ -1,0 +1,16 @@
+{% extends 'oficio/base.html' %}
+
+{% block title %}{{ titulo|default:"Registrar programa" }}{% endblock %}
+
+{% block content %}
+<div class="caja-formulario">
+    <h1>{{ titulo|default:"Registrar nuevo programa" }}</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ formulario.as_p }}
+        <button type="submit" class="btn btn-verde">Guardar programa</button>
+        <a href="{% url 'lista_programas' %}" class="btn btn-rojo">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'oficio/base.html' %}
+
+{% block title %}{{ titulo|default:"Registrar instructor" }}{% endblock %}
+
+{% block content %}
+<div class="caja-formulario">
+    <h1>{{ titulo|default:"Registrar nuevo instructor" }}</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ formulario.as_p }}
+        <button type="submit" class="btn btn-verde">Guardar instructor</button>
+        <a href="{% url 'lista_instructores' %}" class="btn btn-rojo">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

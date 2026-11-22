@@ -1,0 +1,56 @@
+{% extends 'oficio/base.html' %}
+
+{% block title %}Lista de Locales{% endblock %}
+
+{% block content %}
+<h1>Listado de Locales</h1>
+
+<a href="{% url 'crear_local' %}" class="btn btn-verde">
+    + Nuevo local
+</a>
+<a href="{% url 'inicio' %}" class="btn btn-verde">Volver al inicio</a>
+
+<a href="{% url 'mapa_view' %}" class="btn btn-verde">
+    Ver en mapa
+</a>
+
+<form method="GET" action="" class="search-form">
+    <input type="text" name="q" value="{{ query }}" placeholder="Buscar por nombre o dirección..." />
+    <button type="submit" class="btn btn-verde">Buscar</button>
+    {% if query %}
+        <a href="{% url 'lista_locales' %}" class="btn-limpiar">Limpiar</a>
+    {% endif %}
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Dirección</th>
+            <th>Latitud</th>
+            <th>Longitud</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for local in locales %}
+        <tr>
+            <td>{{ local.nombre }}</td>
+            <td>{{ local.direccion }}</td>
+            <td>{{ local.lat|default:"-" }}</td>
+            <td>{{ local.lng|default:"-" }}</td>
+            <td>
+                <div class="acciones">
+                    <a href="{% url 'editar_local' local.id %}" class="btn btn-verde">Editar</a>
+                    <a href="{% url 'eliminar_local' local.id %}" class="btn btn-rojo">Eliminar</a>
+                </div>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No hay locales registrados.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

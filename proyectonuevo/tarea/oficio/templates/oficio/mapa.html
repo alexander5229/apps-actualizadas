@@ -1,0 +1,155 @@
+{% extends 'oficio/base.html' %}
+{% load static %}
+
+{% block title %}Buscador de Mapas{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<style>
+    .map-container {
+        max-width: 860px;
+        margin: 0 auto;
+        background: #f8fafc;
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid #e2e8f0;
+    }
+
+    .input-group {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 18px;
+        flex-wrap: wrap;
+    }
+
+    .input-group input {
+        flex: 1;
+        min-width: 220px;
+        margin-top: 0;
+        font-size: 15px;
+    }
+
+    #map {
+        height: 450px;
+        width: 100%;
+        border-radius: 8px;
+        border: 1px solid #cbd5e1;
+    }
+
+    .estado-mapa {
+        margin-top: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1e3a8a;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="map-container">
+    <h1>Buscador de Direcciones en el Mapa</h1>
+
+    <div class="input-group">
+        <input
+            type="text"
+            id="addressInput"
+            placeholder="Ej: Calle 100, Bogotá, Colombia"
+        />
+        <button type="button" id="btnBuscar" class="btn btn-verde">Buscar</button>
+    </div>
+
+    <div id="map"></div>
+    <p id="estadoMapa" class="estado-mapa"></p>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    const urlGuardarDireccion = "{% url 'guardar_direccion' %}";
+
+    // Inicializar el mapa
+    const map = L.map('map').setView([4.60971, -74.08175], 13);
+
+    // Servidor de OpenStreetMap Francia
+    L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+        maxZoom: 20,
+        attribution: '&copy; OpenStreetMap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    let marker = null;
+    const estadoMapa = document.getElementById('estadoMapa');
+    const addressInput = document.getElementById('addressInput');
+    const btnBuscar = document.getElementById('btnBuscar');
+
+    async function searchAddress() {
+        const address = addressInput.value.trim();
+        if (!address) {
+            alert("Por favor, ingresa una dirección.");
+            return;
+        }
+
+        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}`;
+
+        try {
+            estadoMapa.textContent = "Buscando dirección...";
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (data.length > 0) {
+                const lat = data[0].lat;
+                const lon = data[0].lon;
+                const displayName = data[0].display_name;
+
+                map.setView([lat, lon], 16);
+
+                if (marker) {
+                    map.removeLayer(marker);
+                }
+
+                marker = L.marker([lat, lon]).addTo(map)
+                    .bindPopup(`<b>Ubicación:</b><br>${displayName}`)
+                    .openPopup();
+
+                await enviarAlBackend(displayName, lat, lon);
+            } else {
+                estadoMapa.textContent = "";
+                alert("No se encontró la dirección.");
+            }
+        } catch (error) {
+            console.error("Error al buscar:", error);
+            estadoMapa.textContent = "";
+            alert("Hubo un error al conectar con el servicio de mapas.");
+        }
+    }
+
+    async function enviarAlBackend(address, lat, lon) {
+        try {
+            const response = await fetch(urlGuardarDireccion, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ address: address, lat: lat, lon: lon })
+            });
+            const resultado = await response.json();
+            if (response.ok) {
+                estadoMapa.textContent = resultado.message || "Dirección guardada en la base de datos.";
+            } else {
+                estadoMapa.textContent = resultado.message || "No se pudo guardar la dirección.";
+            }
+        } catch (e) {
+            console.error("No se pudo guardar en la base de datos:", e);
+            estadoMapa.textContent = "Error al conectar con el servidor para guardar.";
+        }
+    }
+
+    btnBuscar.addEventListener('click', searchAddress);
+    addressInput.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            searchAddress();
+        }
+    });
+</script>
+{% endblock %}

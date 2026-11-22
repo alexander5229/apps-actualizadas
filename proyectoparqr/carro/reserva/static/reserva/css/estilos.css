@@ -1,0 +1,86 @@
+/* ==========================================================================
+   1. VARIABLES GLOBALES (PALETA DE COLORES Y ESTILOS BASE)
+   Modifica estos valores para cambiar el diseño en todo el proyecto al instante.
+   ========================================================================== */
+:root {
+    /* Colores principales de la marca */
+    --primary-color: #0d6efd;      /* Azul principal (Botones primarios, enlaces) */
+    --primary-hover: #0b5ed7;      /* Azul al pasar el mouse */
+    --secondary-color: #6c757d;    /* Gris secundario */
+    --success-color: #198754;      /* Verde para estados disponibles / éxito */
+    --danger-color: #dc3545;       /* Rojo para alertas / eliminar / ocupado */
+    --warning-color: #ffc107;      /* Amarillo de advertencia */
+    
+    /* Colores de entorno y superficies */
+    --bg-body: #f8f9fa;            /* Fondo general de la página */
+    --bg-card: #ffffff;            /* Fondo de tarjetas y contenedores */
+    --text-main: #212529;          /* Color principal del texto */
+    --text-muted: #6c757d;         /* Color para textos secundarios o notas */
+    
+    /* Bordes y Sombras */
+    --border-color: #dee2e6;
+    --border-radius: 0.5rem;       /* Redondeo estándar de tarjetas y botones (8px) */
+    --box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075); /* Sombra suave */
+    --box-shadow-lg: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);     /* Sombra profunda para hover */
+}
+
+/* ==========================================================================
+   2. ESTILOS GENERALES DEL CUERPO
+   ========================================================================== */
+body {
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+main {
+    flex: 1; /* Asegura que el footer siempre se quede abajo si hay poco contenido */
+}
+
+/* ==========================================================================
+   3. ESTILOS PERSONALIZADOS PARA TARJETAS (CARDS)
+   ========================================================================== */
+.card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Efecto sutil al pasar el cursor sobre las tarjetas */
+.card:hover {
+    box-shadow: var(--box-shadow-lg);
+}
+
+/* ==========================================================================
+   4. ESTILOS PARA TABLAS (Como tu lista de clientes)
+   ========================================================================== */
+.table {
+    background-color: var(--bg-card);
+    border-radius: var(--border-radius);
+    overflow: hidden; /* Evita que las esquinas de la tabla rompan el borde redondeado */
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(13, 110, 253, 0.04); /* Un toque azul muy sutil al pasar el mouse por la fila */
+}
+
+/* ==========================================================================
+   5. COMPONENTES Y UTILIDADES EXTRAS
+   ========================================================================== */
+/* Estilo personalizado para la barra de navegación superior */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Pie de página */
+footer {
+    background-color: var(--bg-card);
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-color);
+}

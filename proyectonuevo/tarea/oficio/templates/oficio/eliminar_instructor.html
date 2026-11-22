@@ -1,0 +1,16 @@
+{% extends 'oficio/base.html' %}
+
+{% block title %}Eliminar instructor{% endblock %}
+
+{% block content %}
+<div class="caja-confirmacion">
+    <h1>Eliminar instructor</h1>
+    <p>¿Seguro que deseas eliminar al instructor <strong>{{ instructor.nombre }} {{ instructor.apellido }}</strong> (Documento: {{ instructor.documento }} - Ficha asignada: {{ instructor.ficha_asignada }})?</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-rojo">Sí, eliminar</button>
+        <a href="{% url 'lista_instructores' %}" class="btn btn-verde">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

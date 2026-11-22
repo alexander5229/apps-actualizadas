@@ -1,0 +1,106 @@
+{% extends 'reserva/base.html' %}
+{% load static %}
+
+{% block title %} Lista de Reservas - Proyectoparqr {% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+
+        <!-- Cabecera de la sección -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>📅 Historial de Reservas</h2>
+        {% if perms.reserva.add_reserva %}    
+            <a href="{% url 'crear_reserva' %}" class="btn btn-success btn-sm">+ Nueva Reserva</a>
+        {% endif %}
+        </div>
+
+        <!-- Mensajes de confirmación -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Barra de búsqueda -->
+        <form method="GET" class="mb-3">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Buscar por cliente, parqueadero o módulo..." value="{{ query|default:'' }}">
+                <button class="btn btn-primary" type="submit">🔍 Buscar</button>
+                {% if query %}
+                    <a href="{{ request.path }}" class="btn btn-outline-secondary">Limpiar</a>
+                {% endif %}
+            </div>
+        </form>
+
+        <!-- Validación con IF: Verificamos si existen reservas en la base de datos -->
+        {% if reservas %}
+        <div class="card shadow-sm">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped mb-0 align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Cliente</th>
+                                <th>Parqueadero</th>
+                                <th>Módulo</th>
+                                <th>Fecha Inicio</th>
+                                <th>Fecha Fin</th>
+                                <th>Estado</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Bucle FOR para recorrer cada reserva enviada desde la vista -->
+                            {% for reserva in reservas %}
+                            <tr>
+                                <td><strong>{{ forloop.counter }}</strong></td>
+                                <td>{{ reserva.cliente.nombre }} {{ reserva.cliente.apellido }}</td>
+                                <td>{{ reserva.parqueadero.nombre }}</td>
+                                <td>
+                                    {% if reserva.modulo %}
+                                        <span class="badge bg-secondary">{{ reserva.modulo.color }} - {{ reserva.modulo.tipo }}</span>
+                                    {% else %}
+                                        <span class="text-muted">Sin asignar</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ reserva.fecha_inicio|date:"Y-m-d H:i" }}</td>
+                                <td>{{ reserva.fecha_fin|date:"Y-m-d H:i" }}</td>
+                                <td>
+                                    {% if reserva.estado %}
+                                        <span class="badge bg-success">Activa</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Inactiva / Finalizada</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-center">
+                                    <a href="{% url 'editar_reserva' reserva.pk %}" class="btn btn-sm btn-outline-warning">Editar</a>
+                                    <a href="{% url 'eliminar_reserva' reserva.pk %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <!-- Bloque ELSE si la lista está vacía -->
+        <div class="alert alert-warning text-center shadow-sm p-4" role="alert">
+            {% if query %}
+                <h4 class="alert-heading">Sin resultados para "{{ query }}"</h4>
+                <p class="mb-0">Intenta con otro término o haz clic en <strong>Limpiar</strong>.</p>
+            {% else %}
+                <h4 class="alert-heading">¡Sin reservas registradas!</h4>
+                <p class="mb-0">Actualmente no hay reservas en curso o historiales guardados en el sistema.</p>
+            {% endif %}
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}

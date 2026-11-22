@@ -1,0 +1,16 @@
+{% extends 'oficio/base.html' %}
+
+{% block title %}Eliminar local{% endblock %}
+
+{% block content %}
+<div class="caja-confirmacion">
+    <h1>Eliminar local</h1>
+    <p>¿Seguro que deseas eliminar el local <strong>{{ local.nombre }}</strong> ({{ local.direccion }})?</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-rojo">Sí, eliminar</button>
+        <a href="{% url 'lista_locales' %}" class="btn btn-verde">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

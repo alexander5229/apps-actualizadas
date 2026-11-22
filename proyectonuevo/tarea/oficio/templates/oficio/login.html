@@ -1,0 +1,40 @@
+{% extends 'oficio/base.html' %}
+
+{% block title %}Iniciar sesión - Sistema Oficio{% endblock %}
+
+{% block content %}
+<div class="caja-formulario">
+    <h1>Iniciar sesión</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="alerta error">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        {% for field in form %}
+            <p>
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}
+                    <ul class="errorlist">
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </p>
+        {% endfor %}
+
+        {% if next %}
+            <input type="hidden" name="next" value="{{ next }}">
+        {% endif %}
+
+        <button type="submit" class="btn btn-verde">Ingresar</button>
+        <a href="{% url 'inicio' %}" class="btn btn-rojo">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

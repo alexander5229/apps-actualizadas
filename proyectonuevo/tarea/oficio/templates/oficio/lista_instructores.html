@@ -1,0 +1,58 @@
+{% extends 'oficio/base.html' %}
+
+{% block title %}Lista de Instructores{% endblock %}
+
+{% block content %}
+<h1>Listado de Instructores</h1>
+
+<a href="{% url 'crear_instructor' %}" class="btn btn-verde">
+    + Nuevo instructor
+</a>
+<a href="{% url 'inicio' %}" class="btn btn-verde">Volver al inicio</a>
+
+<form method="GET" action="" class="search-form">
+    <input type="text" name="q" value="{{ query }}" placeholder="Buscar por nombre, apellido, documento o especialidad..." />
+    <button type="submit" class="btn btn-verde">Buscar</button>
+    {% if query %}
+        <a href="{% url 'lista_instructores' %}" class="btn-limpiar">Limpiar</a>
+    {% endif %}
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Documento</th>
+            <th>Teléfono</th>
+            <th>Especialidad</th>
+            <th>Ficha asignada</th>
+            <th>Correo</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for instructor in instructores %}
+        <tr>
+            <td>{{ instructor.nombre }}</td>
+            <td>{{ instructor.apellido }}</td>
+            <td>{{ instructor.documento }}</td>
+            <td>{{ instructor.telefono }}</td>
+            <td>{{ instructor.especialidad }}</td>
+            <td>{{ instructor.ficha_asignada }}</td>
+            <td>{{ instructor.correo }}</td>
+            <td>
+                <div class="acciones">
+                    <a href="{% url 'editar_instructor' instructor.id %}" class="btn btn-verde">Editar</a>
+                    <a href="{% url 'eliminar_instructor' instructor.id %}" class="btn btn-rojo">Eliminar</a>
+                </div>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="8">No hay instructores registrados.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

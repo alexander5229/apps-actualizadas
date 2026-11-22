@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Gestión Académica{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'oficio/css/estilos.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header class="navbar">
+        <div class="contenedor">
+            <a href="{% url 'inicio' %}" class="marca">Sistema Oficio</a>
+            <nav class="menu">
+                <a href="{% url 'inicio' %}">Inicio</a>
+                <a href="{% url 'lista_aprendices' %}">Aprendices</a>
+                <a href="{% url 'lista_programas' %}">Programas</a>
+                <a href="{% url 'lista_instructores' %}">Instructores</a>
+                <a href="{% url 'lista_competencias' %}">Competencias</a>
+                <a href="{% url 'lista_locales' %}">Locales</a>
+                <a href="{% url 'mapa_view' %}">Mapa</a>
+            </nav>
+            <div class="sesion">
+                {% if user.is_authenticated %}
+                    <span>{{ user.username }}</span>
+                    <form method="POST" action="{% url 'logout' %}" class="form-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-rojo">Salir</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-verde">Iniciar sesión</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <main class="contenedor">
+        {% if messages %}
+            <div class="mensajes">
+                {% for message in messages %}
+                    <div class="alerta {{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="contenedor">
+            <p>Aplicación académica en Django - Módulo Oficio</p>
+        </div>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

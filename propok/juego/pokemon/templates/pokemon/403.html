@@ -1,0 +1,129 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Denegado (403) | ProPok</title>
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .error-card {
+            background: #ffffff;
+            padding: 40px 32px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 440px;
+            text-align: center;
+        }
+
+        .error-code {
+            display: inline-block;
+            background-color: #fdecea;
+            color: #d9534f;
+            font-weight: bold;
+            font-size: 14px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin-bottom: 14px;
+        }
+
+        .error-card h1 {
+            color: #3b5ca8;
+            margin: 0 0 10px 0;
+            font-size: 26px;
+        }
+
+        .error-card p {
+            color: #555;
+            font-size: 15px;
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+
+        .user-info {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3b5ca8;
+            padding: 10px 14px;
+            text-align: left;
+            font-size: 13px;
+            color: #444;
+            margin-bottom: 24px;
+            border-radius: 4px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background-color: #3b5ca8;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .btn-primary:hover {
+            background-color: #2c4782;
+        }
+
+        .btn-secondary {
+            background-color: #e9ecef;
+            color: #333;
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .btn-secondary:hover {
+            background-color: #dde2e6;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="error-card">
+        <span class="error-code">ERROR 403 · FORBIDDEN</span>
+        <h1>Acceso denegado</h1>
+        <p>
+            No tienes los permisos necesarios para realizar esta acción o ver esta sección en <strong>ProPok</strong>.
+        </p>
+
+        {% if request.user.is_authenticated %}
+            <div class="user-info">
+                Sesión activa como: <strong>{{ request.user.username }}</strong>. Si necesitas acceso, solicita que asignen el permiso correspondiente a tu rol.
+            </div>
+        {% endif %}
+
+        <div class="actions">
+            <a href="{% url 'inicio' %}" class="btn-primary">Volver al inicio</a>
+            <!-- <a href="{% url 'listar_entrenadores' %}" class="btn-primary">Atras</a> -->
+            <a href="{% url 'login' %}" class="btn-secondary">Cambiar de cuenta</a>
+        </div>
+    </div>
+
+</body>
+
+</html>

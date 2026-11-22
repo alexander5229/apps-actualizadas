@@ -1,0 +1,16 @@
+{% extends 'oficio/base.html' %}
+
+{% block title %}{{ titulo|default:"Registrar competencia" }}{% endblock %}
+
+{% block content %}
+<div class="caja-formulario">
+    <h1>{{ titulo|default:"Registrar nueva competencia" }}</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ formulario.as_p }}
+        <button type="submit" class="btn btn-verde">Guardar competencia</button>
+        <a href="{% url 'lista_competencias' %}" class="btn btn-rojo">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

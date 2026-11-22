@@ -1,0 +1,23 @@
+{% extends 'oficio/base.html' %}
+
+{% block title %}Acceso denegado (403){% endblock %}
+
+{% block content %}
+<div class="caja-estado">
+    <h1>403 - Acceso denegado</h1>
+    <p>No tienes permisos suficientes para realizar esta acción o ver esta página.</p>
+
+    {% if user.is_authenticated %}
+        <p>Sesión activa como: <strong>{{ user.username }}</strong>.</p>
+    {% else %}
+        <p>Inicia sesión con una cuenta que tenga los permisos necesarios.</p>
+    {% endif %}
+
+    <div class="acciones">
+        <a href="{% url 'inicio' %}" class="btn btn-verde">Volver al inicio</a>
+        {% if not user.is_authenticated %}
+            <a href="{% url 'login' %}" class="btn btn-verde">Iniciar sesión</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

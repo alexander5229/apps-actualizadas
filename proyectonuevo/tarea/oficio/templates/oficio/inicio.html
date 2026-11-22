@@ -1,0 +1,55 @@
+{% extends 'oficio/base.html' %}
+
+{% block title %}Inicio - Sistema Oficio{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1>Sistema Oficio</h1>
+    <p>Gestión de aprendices, programas, instructores, competencias, locales y ubicaciones en el mapa.</p>
+</section>
+
+<section class="tarjetas-modulos">
+    <article class="tarjeta">
+        <div>
+            <h2>Aprendices</h2>
+            <p>Consulta, registra, edita y busca aprendices por nombre, apellido o documento.</p>
+        </div>
+        <a href="{% url 'lista_aprendices' %}" class="btn btn-verde">Ir a Aprendices</a>
+    </article>
+
+    <article class="tarjeta">
+        <div>
+            <h2>Programas</h2>
+            <p>Administra programas de formación, fichas, jornadas, modalidades e instructores.</p>
+        </div>
+        <a href="{% url 'lista_programas' %}" class="btn btn-verde">Ir a Programas</a>
+    </article>
+
+    <article class="tarjeta">
+        <div>
+            <h2>Instructores</h2>
+            <p>Gestiona instructores, especialidades, fichas asignadas y datos de contacto.</p>
+        </div>
+        <a href="{% url 'lista_instructores' %}" class="btn btn-verde">Ir a Instructores</a>
+    </article>
+
+    <article class="tarjeta">
+        <div>
+            <h2>Competencias</h2>
+            <p>Organiza las competencias asociadas a cada ficha e instructor.</p>
+        </div>
+        <a href="{% url 'lista_competencias' %}" class="btn btn-verde">Ir a Competencias</a>
+    </article>
+
+    <article class="tarjeta">
+        <div>
+            <h2>Locales y Mapa</h2>
+            <p>Registra locales y busca direcciones en el mapa interactivo guardadas en la base de datos.</p>
+        </div>
+        <div class="acciones">
+            <a href="{% url 'lista_locales' %}" class="btn btn-verde">Locales</a>
+            <a href="{% url 'mapa_view' %}" class="btn btn-verde">Mapa</a>
+        </div>
+    </article>
+</section>
+{% endblock %}

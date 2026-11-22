@@ -1,0 +1,16 @@
+{% extends 'oficio/base.html' %}
+
+{% block title %}{{ titulo|default:"Registrar local" }}{% endblock %}
+
+{% block content %}
+<div class="caja-formulario">
+    <h1>{{ titulo|default:"Registrar nuevo local" }}</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ formulario.as_p }}
+        <button type="submit" class="btn btn-verde">Guardar local</button>
+        <a href="{% url 'lista_locales' %}" class="btn btn-rojo">Cancelar</a>
+    </form>
+</div>
+{% endblock %}
